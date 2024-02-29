@@ -755,7 +755,15 @@ export default class CanvasWrapperComponent extends React.PureComponent<Props> {
         canvasInstance.html().addEventListener('canvas.zoomstart', this.onCanvasZoomStart);
         canvasInstance.html().addEventListener('canvas.zoomstop', this.onCanvasZoomDone);
 
-        canvasInstance.html().addEventListener('canvas.setup', this.onCanvasSetup);
+
+        canvasInstance.html().addEventListener('canvas.setup', () => {
+            this.onCanvasSetup()
+            canvasInstance.html().dispatchEvent(new CustomEvent('canvas-load'))
+        }
+        );
+
+
+        // canvasInstance.html().addEventListener('canvas.setup', this.onCanvasSetup);
         canvasInstance.html().addEventListener('canvas.canceled', this.onCanvasCancel);
         canvasInstance.html().addEventListener('canvas.find', this.onCanvasFindObject);
         canvasInstance.html().addEventListener('canvas.deactivated', this.onCanvasShapeDeactivated);
