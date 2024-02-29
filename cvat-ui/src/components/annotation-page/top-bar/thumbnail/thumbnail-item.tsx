@@ -30,5 +30,53 @@ const isExist = (arr: string[], value: number) : boolean => {
 class ThumbnailItem extends React.Component<Props, any>{
     canvasEle: any;
     canvas: React.RefObject<unknown>;
-    
+    constructor(props: Props){
+        super(props)
+        this.state = {
+            isImageLoad: false
+        }
+        this.canvas = React.createRef()
+    }
+
+    shouldComponentUpdate(nextProps: Props, nextState: any) {
+        if (nextState.isImageLoad){
+            return false
+        }else{
+            return isExist(nextProps.ranges, nextProps.id)
+        }
+    }
+
+    componentDidMount() {
+        this.drawCanvas()
+    }
+
+    componentDidUpdate() {
+        this.drawConvas()
+    }
+
+    drawConvas = () => {
+        this.canvasEle = this.canvas.current
+        this.canvasEle.width = 100
+        this.canvasEle.height = 100
+        const context = this.convasEle.getContext('2d')
+
+        this.props.frames.get(this.props.id, false, 1).then((data:any) => {
+            data.data().then((data:any) => {
+                context.drawImage(data.imageData, 0,0,100,100)
+                this.setState({isImageLoad: true})
+            }).catch((error: any) => {
+                const img = new Image()
+                img.src = noImage
+                img.onload = function(){
+                    context.drawImage(img, 0,0,100,100)
+                }
+            })
+        })
+    }
+
+    render(): React.ReactMode {
+        return <canvas ref={this.canvas} style={{verticalAlign: 'bottom'}} />
+    }
 }
+
+export default ThumbnailItem
