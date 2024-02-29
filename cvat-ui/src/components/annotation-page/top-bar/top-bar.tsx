@@ -13,6 +13,7 @@ import LeftGroup from './left-group';
 import PlayerButtons from './player-buttons';
 import PlayerNavigation from './player-navigation';
 import RightGroup from './right-group';
+import Thunmbnail from './thumbnail/thumbnail' //
 
 interface Props {
     playing: boolean;
@@ -141,6 +142,7 @@ export default function AnnotationTopBarComponent(props: Props): JSX.Element {
                 onFinishDraw={onFinishDraw}
                 onSwitchToolsBlockerState={onSwitchToolsBlockerState}
             />
+            <Thumbnail framNumber={frameNumber} onChange={this.onChangePlayerInpuValue} jobInstance={jobInstance}/> 
             <Col className='cvat-annotation-header-player-group'>
                 <Row align='middle'>
                     <PlayerButtons
